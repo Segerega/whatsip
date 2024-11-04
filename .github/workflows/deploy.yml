@@ -16,6 +16,8 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
@@ -27,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: production-files
-          path: .next # Use .next if you’re using the default Next.js output
+          path: .next # Use .next if it’s the default Next.js output
 
   deploy:
     name: Deploy
@@ -40,10 +42,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: production-files
-          path: .next # Adjust to match the uploaded artifact
+          path: .next # Make sure this matches the upload path
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .next # Point to .next or ./dist if changed
+          publish_dir: .next # This should match the build output directory
