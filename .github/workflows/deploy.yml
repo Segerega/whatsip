@@ -25,11 +25,15 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # New step to list contents of the .next directory for debugging
-      - name: List contents of .next directory
-        run: ls -R .next  # Ensure .next directory exists and has files after the build
+      # Debug step to check if the .next directory is created and populated
+      - name: Check .next directory contents
+        run: |
+          echo "Contents of .next directory:"
+          ls -R .next || echo ".next directory not found"
 
+      # Upload production-ready build files if they exist
       - name: Upload production-ready build files
+        if: success() && steps.build.outcome == 'success'
         uses: actions/upload-artifact@v3
         with:
           name: production-files
